@@ -1,0 +1,70 @@
+
+[
+    {
+        "0":"red",
+        "event_name":"red",
+        "1":null,
+        "start_event":null,
+        "2":"Work",
+        "category":"Work",
+        "3":"180567",
+        "length":"180567",
+        "4":"2018-06-08 14:58:27",
+        "time_saved":"2018-06-08 14:58:27",
+        "5":"1528487907",
+        "tim":"1528487907"
+    },
+    {
+        "0":"red",
+        "event_name":"red",
+        "1":null,
+        "start_event":null,
+        "2":"Work",
+        "category":"Work",
+        "3":"1",
+        "length":"1",
+        "4":"2018-06-08 14:58:28",
+        "time_saved":"2018-06-08 14:58:28",
+        "5":"1528487908",
+        "tim":"1528487908"
+    },
+    {
+        "0":null,
+        "event_name":null,
+        "1":"1",
+        "start_event":"1",
+        "2":"Work",
+        "category":"Work",
+        "3":null,
+        "length":null,
+        "4":"2018-06-08 14:58:30",
+        "time_saved":"2018-06-08 14:58:30",
+        "5":"1528487910",
+        "tim":"1528487910"
+    },
+    {
+        "0":"red",
+        "event_name":"red",
+        "1":null,
+        "start_event":null,
+        "2":"Work",
+        "category":"Work",
+        "3":"3",
+        "length":"3",
+        "4":"2018-06-08 14:58:33",
+        "time_saved":"2018-06-08 14:58:33",
+        "5":"1528487913",
+        "tim":"1528487913"
+    },
+    {
+        "0":"red",
+        "event_name":"red",
+        "1":null,
+        "start_event":null,
+        "2":"Work",
+        "category":"Work",
+        "3":"821",
+        "length":"821",
+        "4":"2018-06-08 15:12:14",
+        "time_saved":"2018-06-08 15:1…
+timetracker.js:84:13

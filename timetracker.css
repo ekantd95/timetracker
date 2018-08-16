@@ -1,0 +1,198 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'helvetica neue';
+}
+
+html {
+  height: 100%;
+
+}
+
+body {
+  height: 100%;
+  font-size: 14px;
+  line-height: 1.3em;
+}
+
+.error {
+    color: red;
+}
+
+.page_container {
+    /* float: right; */
+  height: 96%;
+  margin: auto;
+  padding: 4px;
+}
+
+/* header nav*/
+
+header {
+  height: 4%;
+  width: 100%;
+  z-index: 4;
+  /* float: left; */
+}
+    nav {
+      height: 100%;
+      width: 100%;
+      background-color: white;
+      /*position: fixed;*/
+    }
+    nav ul {
+      height: 100%;
+
+    }
+    /* individual list items */
+    nav ul li {
+      width: 60px;
+      height: 100%;
+      list-style-type: none;
+      display: inline-block;
+    }
+    /* anchors */
+    nav ul li a {
+      display: flex;
+      height: 100%;
+      font-size: 14px;
+      font-weight: 400;
+      /* padding: 10px; */
+      text-align: center;
+      text-decoration: none;
+      box-sizing: border-box;
+      background-color: white;
+      color: black;
+    }
+
+    nav ul li a p {
+      margin: auto;
+    }
+
+    li a:hover {
+        text-decoration: none;
+      color: black;
+      border-bottom: 2px solid black;
+    }
+
+    .dropdown-container {
+      position: relative;
+      display: inline-block;
+      height: 100%;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      /* margin-top: 32px; */
+      z-index: 1;
+      height: 100%;
+    }
+    .dropdown-container:hover .dropdown-content {
+      display: block;
+    }
+    .right {
+      float: right;
+    }
+
+/* end of header */
+
+/* tracker */
+
+#tracker_page_container {
+    width: 90%;
+    margin: auto;
+    padding: 5px;
+}
+
+#main_canvas {
+    background-color: #feffef;
+    border: 1px solid black;
+    width: 100%;
+    height: 150px;
+
+}
+
+#warning {
+    color: red;
+}
+/* end of tracker */
+
+/* Edit/Delete */
+
+#add_delete_table th {
+    padding: 10px;
+    /* text-align: left; */
+}
+
+/* end of Edit/Delete */
+
+/* Registration */
+
+#registration_page_container {
+  display: flex;
+  height: 100%;
+}
+
+#registered_page_container {
+  width: 100%;
+  display: flex;
+  height: 96%;
+}
+
+#registered_page_container p {
+  margin: auto;
+  display: inline-block;
+}
+
+#registration_form img {
+  visibility: hidden;
+  height: 18px;
+}
+
+.up {
+  position: absolute;
+}
+
+#register {
+  background-color: #ddd;
+}
+
+.form_container {
+  padding: 20px;
+  margin: auto;
+}
+
+.site_form p {
+  font-size: 30;
+  margin-bottom: 5px;
+}
+
+.site_form input {
+  border-radius: 2px;
+  padding: 5px;
+  width: 200px;
+  border: none;
+  background-color: #eee;
+}
+
+
+/* end of registration */
+
+/* past */
+#seven_canvases {
+    width: 75%;
+    height: 100%;
+    margin: auto;
+}
+
+.sevenD_canvas {
+    background-color: #feffef;
+    border: 1px solid black;
+    width: 100%;
+    height: 140px;
+}
+
+#past_page_container{
+    width: 90%;
+}
