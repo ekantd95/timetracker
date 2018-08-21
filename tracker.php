@@ -2,6 +2,7 @@
     session_start();
     include 'header.php';
     include 'functions.php';
+
 ?>
 
     <div id="tracker_page_container" class="page_container">
@@ -11,8 +12,8 @@
         <p class="current_date"><?php echo date('D, jS') . ' of ' .  date('F Y'); ?></p>
 
         <!-- scale inputs -->
-        <label for="9">8-17</label><input class="scale_input" id="9" name="scale" type="radio" checked />&nbsp;
-        <label for="24">0-24</label><input class="scale_input" id="24" name="scale" type="radio" />&nbsp;
+        <label for="9">8-17</label><input class="scale_input" id="9" name="scale" type="radio" />&nbsp;
+        <label for="24">0-24</label><input class="scale_input" id="24" name="scale" type="radio" checked/>&nbsp;
         <label for="1">Past hour</label><input class="scale_input" id="1" name="scale" type="radio" />
 
         <!-- canvas -->

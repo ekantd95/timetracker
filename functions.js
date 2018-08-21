@@ -194,7 +194,6 @@ function plot(parsed_data, canvas, scale_number) {
 
         // if there is topoff complete it
         if (typeof topoff == 'object') {
-            console.log(topoff);
             // square
             var last_square_width = width - label_x_location;
             c.fillStyle = get_fillstyle(topoff.category);
@@ -294,3 +293,7 @@ function plot(parsed_data, canvas, scale_number) {
 
 
 } // end of plot()
+
+function plot_4() {
+
+}

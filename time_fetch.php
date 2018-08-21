@@ -1,6 +1,10 @@
 <?php
+session_start();
 require ('timetracker_connect.php');
 include ('functions.php');
+$timezone = $_SESSION['time'];
+
+
 
 
 if ( isset($_POST['first_timestamp']) && isset($_POST['last_timestamp']) ) {
@@ -17,10 +21,16 @@ if ( isset($_POST['first_timestamp']) && isset($_POST['last_timestamp']) ) {
         if (mysqli_num_rows($r) == 0) {
             echo 'no markers';
         } else {
+            // set up array of markers
             $markers = array();
             while ($row = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
                 $markers[] = $row;
             }
+
+            // filter into various days
+            $midnights = [];
+
+
 
             // check for topoff
             $last_timestamp = $markers[count($markers) - 1]['tim'];

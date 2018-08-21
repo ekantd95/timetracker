@@ -10,8 +10,8 @@
         <option value="7d">Last 7 days</option>
         <option value="4w">Last 4 weeks</option>
     </select> -->
-    <label for="9">8-17</label><input class="scale_input" id="9" name="scale" type="radio" checked />&nbsp;
-    <label for="24">0-24</label><input class="scale_input" id="24" name="scale" type="radio" />&nbsp;
+    <label for="9">8-17</label><input class="scale_input" id="9" name="scale" type="radio" />&nbsp;
+    <label for="24">0-24</label><input class="scale_input" id="24" name="scale" type="radio" checked/>&nbsp;
 
 
     <!-- <div id="seven_canvases">

@@ -6,7 +6,7 @@
 
     // redirect the user
     header("Location: $url");
-    exit(); // Quite the script.
+    exit(); // Quit the script.
 
   } // end of redirect_user()
 

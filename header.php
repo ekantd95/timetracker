@@ -18,14 +18,21 @@
                 <li><a href="index.php"><p>Home</p></a></li>
                 <li><a href="tracker.php"><p>Tracker</p></a></li>
                 <li><a href="past.php"><p>Past</p></a></li>
-                <li><a href="add_delete.php"><p>Add/Delete</p></a></li>
+                <div class="dropdown-container">
+                    <li><a href="#"><p>Edit</p></a></li>
+                    <ul class="dropdown-content">
+                        <li><a href="add_delete.php"><p>Edit/Delete</p></a></li>
+                        <li><a href="add_marker.php"><p>Add</p></a></li>
+                    </ul>
+                </div>
+                <li><a href="test.php"><p>Test</p></a></li>
 
                 <?php
 
                 // if session exists and it isn't the logout page
                 if ( (isset($_SESSION['user_id'])) && (basename($_SERVER['PHP_SELF']) != 'logout.php') ) {
 
-                    ?><div class="dropdown-container right">
+                    ?><div class="dropdown-container right">-
                     <li class="right"><a id="customer_fn" href="#"><p><?
 
                     if (isset($_SESSION['first_name'])) {
@@ -36,10 +43,10 @@
 
                     ?></p></a></li>
                     <ul class="dropdown-content">
-                    <li><a href="logout.php"><p>Logout</p></a></li>
+                        <li><a href="logout.php"><p>Logout</p></a></li>
                     </ul>
                     </div><?
-
+                    
                 } else {
                     echo "<li class=\"right\"><a href=\"login.php\"><p>Login</p></a></li>\n
                     <li class=\"right\"><a href=\"register.php\"><p>Register</p></a></li>";

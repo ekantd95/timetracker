@@ -2,6 +2,29 @@
     session_start();
     include 'header.php';
     include 'functions.php';
+    ?>
+    <!-- form -->
+    <form id="add_delete_add" method="post" action="time_save.php">
+        <!-- transition name -->
+        <label for="name">Add Marker:</label><input id="event_name" type="text" name="name">
+        <!-- transition type -->
+        <select id="category">
+            <option value="Work">Work</option>
+            <option value="Chill">Chill</option>
+            <option value="WebDev">WebDev</option>
+            <option value="Late">Late</option>
+        </select>
+        <!-- start and stop -->
+        <label for="start">Start?</label><input id="start" type="checkbox" />
+        <!-- submit -->
+        <label for="day">Day</label><input id="day" class="time" type="date" />
+        <label for="hour">Hour</label><input id="hour" class="time" type="number" />
+        <label for="minute">Minute</label><input id="minute" class="time" type="number" />
+        <label for="second">Second</label><input id="second" class="time" type="number" />
+        <input id="submit" type="submit" value="Submit!" />
+    </form>
+    <!-- end of form -->
+    <?php
 
     // hook up database
     require ('timetracker_connect.php');

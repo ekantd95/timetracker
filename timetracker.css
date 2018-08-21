@@ -34,6 +34,10 @@ header {
   z-index: 4;
   /* float: left; */
 }
+
+header a {
+    box-sizing: border-box;
+}
     nav {
       height: 100%;
       width: 100%;
@@ -46,7 +50,7 @@ header {
     }
     /* individual list items */
     nav ul li {
-      width: 60px;
+      width: 80px;
       height: 100%;
       list-style-type: none;
       display: inline-block;
@@ -60,7 +64,6 @@ header {
       /* padding: 10px; */
       text-align: center;
       text-decoration: none;
-      box-sizing: border-box;
       background-color: white;
       color: black;
     }
@@ -70,7 +73,7 @@ header {
     }
 
     li a:hover {
-        text-decoration: none;
+    text-decoration: none;
       color: black;
       border-bottom: 2px solid black;
     }
@@ -123,6 +126,10 @@ header {
 #add_delete_table th {
     padding: 10px;
     /* text-align: left; */
+}
+
+.time {
+    width: 60px;
 }
 
 /* end of Edit/Delete */

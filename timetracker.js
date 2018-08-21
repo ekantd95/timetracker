@@ -72,7 +72,8 @@ function save() {
 
     var data = 'event_name=' + event_name +
     '&category=' + category +
-    '&start_event=' + start_bool;
+    '&start_event=' + start_bool +
+    '&time_saved=' + Math.round(new Date().getTime()/1000);
 
     $.post('time_save.php', data, function(data, status) {
         if (data == "success") {
