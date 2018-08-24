@@ -134,6 +134,17 @@ header a {
 
 /* end of Edit/Delete */
 
+/* add_marker */
+
+.add_marker_error {
+    color: red;
+    display: inline;
+}
+
+#add_marker_form img {
+    height: 18px;
+}
+
 /* Registration */
 
 #registration_page_container {

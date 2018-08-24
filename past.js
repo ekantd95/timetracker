@@ -23,11 +23,30 @@ function plot_7() {
     var ajax_data = 'first_timestamp=' + first_timestamp + '&last_timestamp=' + last_timestamp;
 
     $.post('time_fetch.php', ajax_data, function(data) {
-        // split into data and topoff and get canvases
+
+        var canvases = document.getElementsByClassName('sevenD_canvas');
+
+        // if there were no markers in the past week
+        if (data == 'no markers') {
+
+            // get scale number
+            for (var j = 0; j < scale_inputs.length; j++) {
+                if (scale_inputs[j].checked == true) {
+                    var scale_number = parseInt(scale_inputs[j].id);
+                }
+            }
+
+            for (var i = 0; i < 7; i++) {
+                plot('no markers', canvases[i].id , scale_number)
+            }
+
+            return;
+        }
+
+        // parcel data and continue
         parsed_data = JSON.parse(data);
         markers_7 = parsed_data[0];
         var topoff = parsed_data[1];
-        var canvases = document.getElementsByClassName('sevenD_canvas');
 
 
         first_midnight = midnight - (6 * 24 * 60 * 60 * 1000);
@@ -45,7 +64,7 @@ function plot_7() {
         first_day = new Date(first_midnight).getDate();
         days_7.push(first_day);
         for (var i = 1; i < 7; i++) {
-            var current_day = new Date(markers_7[i].tim * 1000 - offset);
+            var current_day = new Date();
             // get array of all days to match with the markers.
             // NEED TO PROGRAM CASES OF FEBRUARY AND LEAP YEAR
 
@@ -80,29 +99,6 @@ function plot_7() {
 
         }
 
-        // // first midnight
-        // first_stamp = markers_7[0].tim * 1000;
-        // var first_stamp_day = (first_stamp - offset) % total_in_a_day;
-        // first_midnight = first_stamp - first_stamp_day;
-        // midnights = [];
-        // for (var i = 0; i < 7; i++) {
-        //     midnights.push(first_midnight);
-        //     first_midnight += total_in_a_day;
-        // }
-        // midnights.shift();
-        // markers_tree = [];
-        // for (var i = 0; i < 7; i++) {
-        //     markers_tree.push([]);
-        // }
-        //
-        // var token = 0;
-        // for (var i = 0; i < markers_7.length; i++) {
-        //     if ((markers_7[i].tim * 1000) > midnights[token]) {
-        //         token++;
-        //     }
-        //     markers_tree[token].push(markers_7[i]);
-        // }
-
         // plot once for every canvas
         canvases_order = [6,5,4,3,2,1,0];
 
@@ -136,7 +132,7 @@ function plot_7() {
             } // if data actually showed up
 
         } // end of for loop
-    });
+    }); // end of ajax call
 
 }; // end of plot_7
 plot_7();

@@ -5,8 +5,6 @@ include ('functions.php');
 $timezone = $_SESSION['time'];
 
 
-
-
 if ( isset($_POST['first_timestamp']) && isset($_POST['last_timestamp']) ) {
     $q = "SELECT event_name, start_event, category, length, time_saved, UNIX_TIMESTAMP(time_saved) as tim
     from transitions

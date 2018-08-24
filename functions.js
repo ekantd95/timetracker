@@ -14,11 +14,9 @@ function get_fillstyle(category) {
     }
 }
 
-function is_label_appropriate(object, square_width) {
-    var total_chars = object.event_name.length;
-    var width_of_label = total_chars * 12;
+function is_label_appropriate(label_width, square_width) {
 
-    if (width_of_label < square_width - 8) {
+    if (label_width < square_width - 8) {
         return true;
     } else {
         return false;
@@ -27,6 +25,18 @@ function is_label_appropriate(object, square_width) {
 
 function plot(parsed_data, canvas, scale_number) {
 
+    function labeller(event_name, label_x_location, square_width) {
+        // var label_width =  c.measureText(event_name).width;
+        // label_height = 15;
+        // c.rect(label_x_location + square_width/2 - label_width/2, graph_height/2 - label_height/2, label_width, label_height);
+        // c.fillStyle = 'white';
+        // c.lineW = 'none';
+        // c.fill();
+        c.font = "12px helvetica neue";
+        c.fillStyle = 'black';
+        c.fillText(event_name, label_x_location + square_width/2, graph_height/2);
+
+    }
 
     // unpackage data
     var markers = parsed_data[0];
@@ -103,10 +113,7 @@ function plot(parsed_data, canvas, scale_number) {
 
            markers = markers_filtered;
 
-
        } // scale number not 24
-
-
 
         // loop through all events and plot squares and labels
         var label_x_location = 0;
@@ -162,17 +169,16 @@ function plot(parsed_data, canvas, scale_number) {
                     c.stroke();
 
                     //label if event's longer than 10 min
-                    if (is_label_appropriate(markers[i], )) {
-                        c.font = "12px helvetica neue";
-                        c.fillStyle = 'black';
-                        c.fillText(markers[i].event_name, partial_end_width/2, graph_height/2);
+                    if (is_label_appropriate(c.measureText(markers[i].event_name).width, partial_end_width)) {
+                        labeller(markers[i].event_name, label_x_location, partial_end_width);
                     }
                     label_x_location = label_x_location + partial_end_width;
 
                 // not first end data points
                 } else {
                     // square
-                        var square_width = markers[i].length/total * width;
+                        var length = markers[i].tim - markers[i-1].tim;
+                        var square_width = length/total * width;
                         c.fillStyle = get_fillstyle(markers[i].category);
                         c.fillRect(label_x_location, 0, square_width, graph_height);
                         c.moveTo(label_x_location + square_width, 0);
@@ -180,12 +186,13 @@ function plot(parsed_data, canvas, scale_number) {
                         c.stroke();
 
                         // labels if event's longer than 10 min
-                        if (is_label_appropriate(markers[i], square_width)) {
-                            c.font = "12px helvetica neue";
-                            c.fillStyle = 'black';
-                            c.fillText(markers[i].event_name, label_x_location + square_width/2, graph_height/2);
+                        if (is_label_appropriate(c.measureText(markers[i].event_name).width, square_width)) {
+                            labeller(markers[i].event_name, label_x_location, square_width);
                         }
                         label_x_location = label_x_location + square_width;
+
+
+
                 } // if it's an end but not the first one
 
             } // if it's an end
@@ -200,17 +207,14 @@ function plot(parsed_data, canvas, scale_number) {
             c.fillRect(label_x_location, 0, width, graph_height);
 
             //label if event's longer than 10 min
-            if (is_label_appropriate(topoff,last_square_width)) {
-                c.font = "12px helvetica neue";
-                c.fillStyle = 'black';
-                c.fillText(topoff.event_name, last_square_width/2, graph_height/2);
+            if (is_label_appropriate(c.measureText(topoff.event_name).width,last_square_width)) {
+                labeller(topoff.event_name, label_x_location, last_square_width);
             }
 
-        }
+            // topoff if scale_number == 9
+            if (scale_number == 9) {
 
-        // topoff if scale_number == 9
-        if (scale_number == 9) {
-
+            }
         }
 
     } // end of 'no markers' validation
@@ -293,7 +297,3 @@ function plot(parsed_data, canvas, scale_number) {
 
 
 } // end of plot()
-
-function plot_4() {
-
-}
