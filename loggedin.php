@@ -12,7 +12,7 @@
 
   ?><div id="loggedin_page_container">
       <div id="loggedin">
-        <p>You are now logged in, <?echo $_SESSION['first_name']; ?>!</p>
+        <p>You are now logged in, <?echo $_SESSION['timetracker_first_name']; ?>!</p>
       </div>
     </div><?
 

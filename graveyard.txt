@@ -1,0 +1,6 @@
+<select id="category" name="category">
+    <option value="Work" <? selected("Work", $category) ?> >Work</option>
+    <option value="Chill" <? selected("Chill", $category) ?> >Chill</option>
+    <option value="WebDev" <? selected("WebDev", $category) ?> >WebDev</option>
+    <option value="Late" <? selected("Late", $category) ?> >Late</option>
+</select>

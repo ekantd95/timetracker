@@ -20,7 +20,7 @@ function plot_7() {
 
     var first_timestamp = Math.round((midnight - total_in_a_day * 6)/1000);
     var last_timestamp = Math.round(now / 1000);
-    var ajax_data = 'first_timestamp=' + first_timestamp + '&last_timestamp=' + last_timestamp;
+    ajax_data = 'first_timestamp=' + first_timestamp + '&last_timestamp=' + last_timestamp;
 
     $.post('time_fetch.php', ajax_data, function(data) {
 
@@ -41,12 +41,13 @@ function plot_7() {
             }
 
             return;
-        }
+
+        } // if there were no markers
 
         // parcel data and continue
         parsed_data = JSON.parse(data);
         markers_7 = parsed_data[0];
-        var topoff = parsed_data[1];
+        topoff = parsed_data[1];
 
 
         first_midnight = midnight - (6 * 24 * 60 * 60 * 1000);
@@ -99,6 +100,52 @@ function plot_7() {
 
         }
 
+        //go through marker_tree and add topoffs
+         markers_tree_new = [
+            [
+                markers_tree[0],
+                0
+            ],
+            [
+                markers_tree[1],
+                0
+            ],
+            [
+                markers_tree[2],
+                0
+            ],
+            [
+                markers_tree[3],
+                0
+            ],
+            [
+                markers_tree[4],
+                0
+            ],
+            [
+                markers_tree[5],
+                0
+            ],
+            [
+                markers_tree[6],
+                0
+            ]
+        ];
+
+        for (var i = 6; i > -1; i--) {
+            if (markers_tree[i].length > 0 && markers_tree[i][0].start_event == null){
+            // first event is end and therefore topoff must be applied to every prior day without markers and only the first prior day with markers
+                for (var j = (i-1); j > -1; j--) {
+                    if (markers_tree_new[j][0].length == 0) {
+                        markers_tree_new[j][1] = markers_tree[i][0];
+                    } else {
+                        markers_tree_new[j][1] = markers_tree[i][0];
+                        break;
+                    }
+                }
+            }
+        }
+
         // plot once for every canvas
         canvases_order = [6,5,4,3,2,1,0];
 
@@ -111,25 +158,10 @@ function plot_7() {
                 }
             }
 
-            if (markers_tree[i].length == 0) {
-                plot('no markers', canvases[canvases_order[i]].id, scale_number);
-            } else {
+            // plot
+            plot(markers_tree_new[i], canvases[canvases_order[i]].id , scale_number);
 
-                if (i == 6) {
-                    if (topoff == 1) {
-                        var day_topoff = 1;
-                    } else {
-                        var day_topoff = 0;
-                    }
-                }
 
-                //put together
-                single_day_data = [markers_tree[i],day_topoff];
-
-                // plot
-                plot(single_day_data, canvases[canvases_order[i]].id , scale_number);
-
-            } // if data actually showed up
 
         } // end of for loop
     }); // end of ajax call

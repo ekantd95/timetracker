@@ -5,19 +5,21 @@
     // hook up database
     require 'timetracker_connect.php';
 
-    if (isset($_GET['transition_id']) AND is_numeric($_GET['transition_id'])){
+
+    if (isset($_GET['transition_id']) AND is_numeric($_GET['transition_id'])) { // first time clicked
 
         $query = "SELECT event_name, time_saved, category
         FROM transitions
-        WHERE transition_id={$_GET['transition_id']}";
+        WHERE transition_id={$_GET['transition_id']}
+        and user_id={$_SESSION['timetracker_user_id']}";
         if ($r = mysqli_query($dbc,$query)) {
 
             $row = mysqli_fetch_array($r);
             echo '<form action="delete_marker.php" method="post">
             <p>Are you sure you want to delete this marker?</p>
-            <p>Event Name:<h3>' . $row['event_name'] . '</h3></p>
-            <p>Category:<h3>' . $row['category'] . '</h3></p>
-            <p>Time saved:<h3>' . $row['time_saved'] . '</h3></p>
+            <h4>Event Name:</h4><p>' . $row['event_name'] . '</p>
+            <h4>Category:</h4><p>' . $row['category'] . '</p>
+            <h4>Time saved:</h4><p>' . $row['time_saved'] . '</p>
             <input type="hidden" name="transition_id" value="' . $_GET['transition_id'] . '">
             <input type="submit" name="submit" value="Delete this marker!"></p>
             </form>';
@@ -26,7 +28,7 @@
             echo '<p style="color: red;">Could not retrieve the blog marker because:<br>' . mysqli_error($dbc) . '.</p> <p>The query being run was: ' . $query . '</p>';
         }
 
-    } elseif (isset($_POST['transition_id']) AND is_numeric($_POST['transition_id'])) {
+    } elseif (isset($_POST['transition_id']) AND is_numeric($_POST['transition_id'])) { // confirmed
 
          // Handle the form
         $query = "DELETE FROM transitions WHERE transition_id={$_POST['transition_id']} LIMIT 1";

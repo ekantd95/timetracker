@@ -4,18 +4,18 @@
     require ('timetracker_connect.php');
 
     // validate
-    list ($check, $data) = check_login($dbc, $_POST['email'], $_POST['password']);
+    list ($check, $data) = check_login($dbc, $_POST['username'], $_POST['password']);
 
     if ($check) {
       // set session data
       session_start();
-      $_SESSION['user_id'] = $data['user_id'];
-      $_SESSION['first_name'] = $data['first_name'];
+      $_SESSION['timetracker_user_id'] = $data['user_id'];
+      $_SESSION['timetracker_first_name'] = $data['first_name'];
       // Store the HTTP_USER_AGENT
       $_SESSION['agent'] = md5($_SERVER['HTTP_USER_AGENT']);
       // redirect
 
-      redirect_user('loggedin.php');
+      redirect_user('tracker.php');
     } else {
       $errors = $data;
     }
@@ -24,27 +24,30 @@
 
   } // server request method conditional
 
-  $page_title = 'Login';
+  $title = 'Login';
   include ('header.php');
 
-  ?><div class="page_container" id="login_page_container"><?
-
-  if (isset($errors) && !empty($errors)) {
-    echo '<h3>Error!</h3>
-    <p class="error">The following error(s) occured:<br />';
-    foreach ($errors as $msg) {
-      echo " - $msg<br />\n";
-    }
-    echo '</p><p>Please try again.</p>';
-  }
-
-?>
+  ?><div class="page_container" id="login_page_container">
   <div class="form_container" id="form_container">
     <h1>Login</h1><br />
     <form class="site_form" action="login.php" method="post">
-      <p>Email Address:<br /> <input type="text" name="email" size="20" maxlength="60" /></p><br />
+      <p>Username:<br /> <input type="text" name="username" size="20" maxlength="60" /></p>
       <p>Password:<br /> <input type="password" name="password" size="20" maxlength="20" /></p><br /><br />
       <p><input type="submit" name="submit" value="Login"/></p>
     </form>
+
+    <?
+
+    if (isset($errors) && !empty($errors)) {
+      echo '<h3>Error!</h3>
+      <p class="error">The following error(s) occured:<br />';
+      foreach ($errors as $msg) {
+        echo " - $msg<br />\n";
+      }
+      echo 'Please try again.</p>';
+    }
+
+  ?>
+
   </div><!-- form container -->
 <? include ('footer.php'); ?>

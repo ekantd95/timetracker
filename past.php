@@ -1,5 +1,10 @@
 <?php
     session_start();
+    require 'timetracker_connect.php';
+    include 'login_functions.inc.php';
+    if (!isset($_SESSION['timetracker_user_id'])) {
+        redirect_user();
+    }
     include 'header.php';
     include 'functions.php';
 ?>
@@ -10,18 +15,14 @@
         <option value="7d">Last 7 days</option>
         <option value="4w">Last 4 weeks</option>
     </select> -->
+    <select>
+        <option value="Past 7 Days">Past 7 Days</option>
+    </select> More coming soon<br /><br />
     <label for="9">8-17</label><input class="scale_input" id="9" name="scale" type="radio" />&nbsp;
     <label for="24">0-24</label><input class="scale_input" id="24" name="scale" type="radio" checked/>&nbsp;
+    <?php echo color_key($dbc); ?>
 
 
-    <!-- <div id="seven_canvases">
-        <canvas class="sevenD_canvas" id="1"></canvas>
-        <canvas class="sevenD_canvas" id="2"></canvas>
-        <canvas class="sevenD_canvas" id="3"></canvas>
-        <canvas class="sevenD_canvas" id="4"></canvas>
-        <canvas class="sevenD_canvas" id="5"></canvas>
-        <canvas class="sevenD_canvas" id="6"></canvas>
-        <canvas class="sevenD_canvas" id="7"></canvas> -->
 
         <?php
             for ($i = 0; $i < 7; $i++) { ?>

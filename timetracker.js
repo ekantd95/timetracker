@@ -10,7 +10,6 @@ for (var i = 0; i < scale_inputs.length; i++) {
 // Add event listener to #submit
 document.getElementById('submit').addEventListener('click', function(){
     save();
-    retrieve_and_plot();
 }, false);
 
 
@@ -57,9 +56,10 @@ retrieve_and_plot();
 
 function save() {
 
+    var errors = '';
     var start_bool;
-    var event_name;
-    var category;
+    var event_name = document.getElementById('event_name').value.trim();
+    var category = document.getElementById('category');
     if (document.getElementById('start').checked) {
         start_bool = 'true';
         event_name = "";
@@ -67,30 +67,45 @@ function save() {
     } else {
         start_bool = 'false';
         event_name = document.getElementById('event_name').value;
-        category = document.getElementById('category').value;
+
+        if (event_name == '') {
+            errors += 'You have to enter a name';
+        }
+        if (category == null || (category.value == 'none')) {
+            errors += 'You have to assign a category';
+        } else {
+            category = document.getElementById('category').value;
+        }
     }
 
-    var data = 'event_name=' + event_name +
-    '&category=' + category +
-    '&start_event=' + start_bool +
-    '&time_saved=' + Math.round(new Date().getTime()/1000);
+    if (errors.length == 0) {
+        data = 'event_name=' + event_name +
+        '&category=' + category +
+        '&start_event=' + start_bool +
+        '&time_saved=' + Math.round(new Date().getTime()/1000);
 
-    $.post('time_save.php', data, function(data, status) {
-        if (data == "success") {
-            $('#warning').hide();
-            update_main_table();
+        $.post('time_save.php', data, function(data, status) {
+            if (data == "success") {
+                $('#warning').hide();
+                update_main_table();
+                retrieve_and_plot();
 
-        } else if (data.substr(0,1) == 'S' || data.substr(0,1) == 'C') {
-            // $("#warning").innerHTML = data;
-            $("#warning").text(data);
-            $('#warning').show();
+            } else if (data.substr(0,1) == 'S' || data.substr(0,1) == 'C') {
+                // $("#warning").innerHTML = data;
+                $("#warning").text(data);
+                $('#warning').show();
 
-        } else {
-            $("#warning").text(data);
-            $('#warning').show(1000);
+            } else {
+                $("#warning").text(data);
+                $('#warning').show(1000);
 
-        }
-    });
+            }
+        });
+    } else { // there were errors
+        $('#warning').show();
+        $('#warning').text(errors);
+    }
+
 
 } // end of save();
 
@@ -103,7 +118,7 @@ function update_main_table() {
             console.log(data);
             console.log('table data retrieval messed up');
         }
-    }) // end of $.post()
+    }) // end of $.get()
 
 
 } // end of update_main_table()

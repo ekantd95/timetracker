@@ -1,17 +1,24 @@
 var global_utility;
+var colors = document.getElementById('colorkey').value;
+var pairs = colors.split(';');
+categories = [];
+colors = [];
 
 function get_fillstyle(category) {
-    switch (category) {
-        case "Work":
-            return "lightblue";
-        case "Chill":
-            return "Yellow";
-        case "WebDev":
-            return "#FF0000";
-        case "Late":
-            return "lightgreen";
-            break;
+    pairs.forEach(function(pair, index) {
+        var keyval = pair.split(',');
+        categories.push(keyval[0]);
+        colors.push(keyval[1]);
+    })// end of foreach
+
+    // #colorkey must be present in the dom for this function to work
+    for (var i = 0; i < categories.length; i++) {
+        if (category == categories[i]) {
+            return colors[i];
+        }
     }
+    // default light blue if the events category doesn't have a color value defined in the categories
+    return '#42d7f4';
 }
 
 function is_label_appropriate(label_width, square_width) {
@@ -27,14 +34,15 @@ function plot(parsed_data, canvas, scale_number) {
 
     function labeller(event_name, label_x_location, square_width) {
         // var label_width =  c.measureText(event_name).width;
-        // label_height = 15;
-        // c.rect(label_x_location + square_width/2 - label_width/2, graph_height/2 - label_height/2, label_width, label_height);
+        // // label_height = c.measureText(event_name).height;
+        var label_height = 10;
+        // c.rect(label_x_location + square_width/2 - label_width/2 - 3, graph_height/2 - label_height/2 - 3, label_width + 6, label_height + 6);
         // c.fillStyle = 'white';
         // c.lineW = 'none';
         // c.fill();
         c.font = "12px helvetica neue";
         c.fillStyle = 'black';
-        c.fillText(event_name, label_x_location + square_width/2, graph_height/2);
+        c.fillText(event_name, label_x_location + square_width/2, graph_height/2 + label_height/2);
 
     }
 
@@ -68,7 +76,7 @@ function plot(parsed_data, canvas, scale_number) {
     c.clearRect(0,0,width,height);
 
 
-    if (parsed_data !== 'no markers') {
+    if (markers.length !== 0) {
 
         // if scale_number == 9 cut ends of data so only appropriate markers remain;
         if (scale_number !== 24) {
@@ -92,7 +100,7 @@ function plot(parsed_data, canvas, scale_number) {
            markers_filtered = [];
            for (var i = 0; i < markers.length; i++) {
                var fs = markers[i].tim * 1000 - offset;
-               if ( (fs > first_cut) && (fs < second_cut) ) {
+               if ( (fs > first_cut) && (fs <= second_cut) ) {
                    markers_filtered.push(markers[i]);
                }
            } // end of for
@@ -116,22 +124,19 @@ function plot(parsed_data, canvas, scale_number) {
        } // scale number not 24
 
         // loop through all events and plot squares and labels
-        var label_x_location = 0;
+        label_x_location = 0;
 
         for (var i = 0; i < markers.length; i++) {
 
             // if it's a start
             if (markers[i].start_event == "1") {
-
-                // don't plot
-                var d = new Date();
-                var offset = (d.getTimezoneOffset()) * 60;
+                // don't plot but move label_x_location the appropriate amount
+                var offset = (new Date().getTimezoneOffset()) * 60;
                 var new_date = markers[i].tim - offset;
-                var seconds_today = new_date % total_in_24;
-
+                seconds_today = new_date % total_in_24;
                 if (scale_number == 9) { seconds_today -= total_in_8; };
                 if (scale_number == 1) {
-                    var time_since_midnight = (Date.now() - offset) % total_in_24;
+                    var time_since_midnight = (Math.round(Date.now()/1000) - offset) % total_in_24;
                     var time_since_last_event = time_since_midnight - seconds_today;
                     var seconds_in_the_hour = 3600 - time_since_last_event;
                     seconds_today = seconds_in_the_hour;
@@ -217,7 +222,11 @@ function plot(parsed_data, canvas, scale_number) {
             }
         }
 
-    } // end of 'no markers' validation
+    } else if (markers.length == 0 && typeof topoff == 'object') {
+        c.fillStyle = get_fillstyle(topoff.category);
+        c.fillRect(0,0,width, graph_height);
+        labeller(topoff.event_name, 0, width);
+    }
 
     // draw hour lines and hour labels
     if (scale_number == 9 || scale_number == 24) {

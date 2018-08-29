@@ -6,27 +6,48 @@
     require ('timetracker_connect.php');
 
     mysqli_set_charset($dbc, 'utf8');
+    echo '<div class="page_container">';
 
     // if link was clicked to edit marker
     if (isset($_GET['transition_id']) AND is_numeric($_GET['transition_id'])) {
 
         $query = "SELECT event_name, category
         FROM transitions
-        WHERE transition_id={$_GET['transition_id']}";
+        WHERE transition_id={$_GET['transition_id']}
+        and user_id={$_SESSION['timetracker_user_id']}";
         if ($r = mysqli_query($dbc,$query)) {
             $row = mysqli_fetch_array($r);
             $category = $row['category'];
 
             ?><form action="edit_marker.php" method="post">
             <p>Event Name: <input type="text" name="event_name" size="40" maxsize="100" value="<?php  echo htmlentities($row['event_name']) ?>" /></p>
-            <p>Category:
+            <p>Category:<?php
 
-            <select id="category" name="category">
-                <option value="Work" <? selected("Work", $category) ?> >Work</option>
-                <option value="Chill" <? selected("Chill", $category) ?> >Chill</option>
-                <option value="WebDev" <? selected("WebDev", $category) ?> >WebDev</option>
-                <option value="Late" <? selected("Late", $category) ?> >Late</option>
-            </select>
+            $q = "SELECT * from categories
+            where user_id={$_SESSION['timetracker_user_id']}
+            and active=1
+            order by category_name;";
+            $r = mysqli_query($dbc, $q);
+            if ($r) {
+                $cat_string ='';
+                if (mysqli_num_rows($r) > 0) { // if there are categories display them
+                    echo "<select id=\"category\" name=\"category\">";
+                    while ($row = mysqli_fetch_array($r)) {
+                        if ($row['category_name'] == $category) {
+                            echo "<option selected value=\"{$row['category_name']}\">{$row['category_name']}</option>";
+                        } else {
+                            echo "<option value=\"{$row['category_name']}\">{$row['category_name']}</option>";
+                        }
+                    }
+                    echo "</select>";
+                } else { // there were no categories
+                    echo "<a href=\"categories.php\" class=\"cat\">Add a category!</a>";
+                }
+            } else {
+                echo 'query failed';
+            } // query failed
+
+            ?>
 
             </p>
             <input type="hidden" name="transition_id" value="<?php echo $_GET['transition_id']; ?>">
@@ -54,7 +75,7 @@
             WHERE transition_id={$_POST['transition_id']}";
             $r = mysqli_query($dbc,$query);
             if (mysqli_affected_rows($dbc) == 1) {
-            echo '<p>The blog entry has been updated.</p>';
+            echo '<p>The marker has been updated.</p>';
             } else { // Table wasn't updated
                 echo '<p style="color: red;">Could not update the entry because:<br>' . mysqli_error($dbc) . '.</p><p>The query being run was: ' . $query . '</p>';
             }
@@ -65,5 +86,6 @@
         echo '<p>This page was accessed in error</p>';
     }
     mysqli_close($dbc);
+    echo '</div><!-- page container -->';
     include 'footer.php';
     ?>

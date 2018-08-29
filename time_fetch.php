@@ -2,14 +2,13 @@
 session_start();
 require ('timetracker_connect.php');
 include ('functions.php');
-$timezone = $_SESSION['time'];
-
 
 if ( isset($_POST['first_timestamp']) && isset($_POST['last_timestamp']) ) {
-    $q = "SELECT event_name, start_event, category, length, time_saved, UNIX_TIMESTAMP(time_saved) as tim
+    $q = "SELECT event_name, start_event, category, time_saved, UNIX_TIMESTAMP(time_saved) as tim
     from transitions
     where UNIX_TIMESTAMP(time_saved) > {$_POST['first_timestamp']}
     and UNIX_TIMESTAMP(time_saved) < {$_POST['last_timestamp']}
+    and user_id = {$_SESSION['timetracker_user_id']}
     order by time_saved asc;";
 
     $r = mysqli_query($dbc, $q);
@@ -25,18 +24,14 @@ if ( isset($_POST['first_timestamp']) && isset($_POST['last_timestamp']) ) {
                 $markers[] = $row;
             }
 
-            // filter into various days
-            $midnights = [];
-
-
-
             // check for topoff
             $last_timestamp = $markers[count($markers) - 1]['tim'];
 
             $q = "SELECT event_name, category, UNIX_TIMESTAMP(time_saved) as tim
-            FROM transitions
-            WHERE UNIX_TIMESTAMP(time_saved) > $last_timestamp
-            ORDER BY time_saved ASC LIMIT 1;";
+            from transitions
+            where UNIX_TIMESTAMP(time_saved) > $last_timestamp
+            and user_id={$_SESSION['timetracker_user_id']}
+            order by time_saved asc limit 1;";
             $r = mysqli_query($dbc, $q);
             if (mysqli_num_rows($r) > 0) {
                 $single_row = mysqli_fetch_array($r);
@@ -48,7 +43,6 @@ if ( isset($_POST['first_timestamp']) && isset($_POST['last_timestamp']) ) {
             } else {
                 $topoff = 'none';
             }
-
 
             $data = array($markers, $topoff);
             $data = json_encode($data);

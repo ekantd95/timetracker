@@ -1,6 +1,8 @@
-window.addEventListener('load', function() {
+// window.addEventListener('load', function() {
+
   var inputs = document.getElementsByTagName('input');
   var submit = document.getElementById('register');
+  var ups = document.getElementsByClassName('up');
 
   function everything_is_complete() {
     var empty = [];
@@ -18,13 +20,27 @@ window.addEventListener('load', function() {
   } // end of is_everything_empty
 
   function check(id) {
-    document.getElementById(id + '_check').style.visibility = 'visible';
-    document.getElementById(id + '_cross').style.visibility = 'hidden';
+    document.getElementById(id + '_check').style.display = 'inline';
+    document.getElementById(id + '_cross').style.display = 'none';
   }
 
   function cross(id) {
-    document.getElementById(id + '_check').style.visibility = 'hidden';
-    document.getElementById(id + '_cross').style.visibility = 'visible';
+    document.getElementById(id + '_check').style.display = 'none';
+    document.getElementById(id + '_cross').style.display = 'inline';
+  }
+
+  function are_all_crosses_shown() {
+      var errors = 0;
+      for (var i = 0; i < ups.length; i++) {
+          if (ups[i].style.display == '' || ups[i].style.display == 'none') {
+              errors++;
+          }
+      }
+      if (errors > 0) {
+          submit.disabled = true;
+      } else {
+          submit.disabled = false;
+      }
   }
 
   function validate_registration(e) {
@@ -34,7 +50,7 @@ window.addEventListener('load', function() {
         } else { // there is a value
           check(this.id);
         }
-        if (everything_is_complete()) { submit.disabled = false; };
+        are_all_crosses_shown();
         break;
       case 'last_name':
         if (this.value == '') {
@@ -42,26 +58,23 @@ window.addEventListener('load', function() {
         } else { // there is a value
           check(this.id);
         }
-        if (everything_is_complete()) { submit.disabled = false; };
+        are_all_crosses_shown();
         break;
-      case 'email':
-        var x = this.value;
-        var atpos = x.indexOf("@");
-        var dotpos = x.lastIndexOf(".");
-        if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) { // failed validation
-          cross(this.id);
-        } else {
-          check(this.id);
-        }
-        if (everything_is_complete()) { submit.disabled = false; };
+      case 'username':
+      if (this.value == '') {
+        cross(this.id);
+      } else { // there is a value
+        check(this.id);
+      }
         break;
+        are_all_crosses_shown();
       case 'pass1':
         if (this.value == '') {
           cross(this.id);
         } else { // there is a value
           check(this.id);
         }
-        if (everything_is_complete()) { submit.disabled = false; };
+        are_all_crosses_shown();
         break;
       case 'pass2':
         if (this.value == document.getElementById('pass1').value) { // accurate
@@ -69,7 +82,7 @@ window.addEventListener('load', function() {
         } else {
           cross(this.id);
         }
-        if (everything_is_complete()) { submit.disabled = false; };
+        are_all_crosses_shown();
         break;
     } // end of switch
   } // end of validate_registration
@@ -78,4 +91,4 @@ window.addEventListener('load', function() {
     inputs[i].addEventListener('blur', validate_registration, false);
   }
 
-}, false);
+// }, false); // document.onlad

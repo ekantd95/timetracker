@@ -10,12 +10,12 @@
 
   } // end of redirect_user()
 
-  function check_login($dbc, $email = '', $password = '') {
+  function check_login($dbc, $username = '', $password = '') {
     $errors = array();
-    if (empty($email)) {
-      $errors[] = 'You forgot to enter your email address.';
+    if (empty($username)) {
+      $errors[] = 'You forgot to enter your username.';
     } else {
-      $e = mysqli_real_escape_string ($dbc, trim($email));
+      $e = mysqli_real_escape_string ($dbc, trim($username));
     }
 
     if (empty($password)) {
@@ -25,13 +25,13 @@
     }
 
     if (empty($errors)) {
-      $q = "SELECT user_id, first_name FROM users WHERE email='$e' AND password=SHA1('$p')";
+      $q = "SELECT user_id, first_name FROM users WHERE username='$e' AND password=SHA1('$p')";
       $r = mysqli_query($dbc, $q);
       if (mysqli_num_rows($r) == 1) {
         $row = mysqli_fetch_array($r, MYSQLI_ASSOC);
         return array(true, $row);
       } else { // not a match
-        $errors[] = 'The email address and password entered do not match those on file.';
+        $errors[] = 'The username address and password entered do not match those on file.';
       }
     } // end of empty($errors) if
 

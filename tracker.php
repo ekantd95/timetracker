@@ -1,7 +1,13 @@
 <?php
     session_start();
+    include 'login_functions.inc.php';
+    if (!isset($_SESSION['timetracker_user_id'])) {
+        redirect_user();
+    }
+    $title = 'Tracker';
     include 'header.php';
     include 'functions.php';
+    require 'timetracker_connect.php';
 
 ?>
 
@@ -9,7 +15,7 @@
 
         <!-- current date -->
         <br />
-        <p class="current_date"><?php echo date('D, jS') . ' of ' .  date('F Y'); ?></p>
+        <h4 class="current_date"><?php echo date('D, jS') . ' of ' .  date('F Y'); ?></h4>
 
         <!-- scale inputs -->
         <label for="9">8-17</label><input class="scale_input" id="9" name="scale" type="radio" />&nbsp;
@@ -21,17 +27,14 @@
 
         <!-- form -->
 
-            <!-- transition name -->
+            <!-- marker name -->
             <label for="name">Add Marker:</label><input id="event_name" type="text" name="name">
-            <!-- transition type -->
-            <select id="category">
-                <option value="Work">Work</option>
-                <option value="Chill">Chill</option>
-                <option value="WebDev">WebDev</option>
-                <option value="Late">Late</option>
-            </select>
-            <!-- start and stop -->
+            <!-- marker category -->
+            <? echo categories_select($dbc); ?>
+            <!-- start event? -->
             <label for="start">Start?</label><input id="start" type="checkbox" />
+            <!-- color key for plotting -->
+            <?php echo color_key($dbc); ?>
             <!-- submit -->
             <button id="submit" type="button">Submit</button>
 
